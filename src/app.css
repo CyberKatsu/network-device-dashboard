@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --scrollbar-thumb: #1e2d4a;
+    --scrollbar-track: #060c1a;
+  }
+
+  /* Custom scrollbar — matches dark theme */
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2a3d60; }
+
+  * { box-sizing: border-box; }
+}
+
+@layer components {
+  /* Card panel — reused across all views */
+  .panel {
+    @apply bg-surface-700 border border-surface-500 rounded-lg;
+  }
+
+  /* Monospace data value (signal levels, throughput numbers) */
+  .data-value {
+    @apply font-mono text-cyan-DEFAULT tabular-nums;
+  }
+
+  /* Status pill */
+  .pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium font-mono;
+  }
+  .pill-up     { @apply pill bg-status-up/15 text-status-up; }
+  .pill-down   { @apply pill bg-status-down/15 text-status-down; }
+  .pill-warn   { @apply pill bg-status-ranging/15 text-status-ranging; }
+  .pill-info   { @apply pill bg-cyan-DEFAULT/15 text-cyan-DEFAULT; }
+
+  /* Subtle section label */
+  .section-label {
+    @apply text-2xs font-mono font-medium uppercase tracking-widest text-gray-500;
+  }
+
+  /* Nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-gray-400
+           hover:text-gray-100 hover:bg-surface-600 transition-colors duration-150 cursor-pointer;
+  }
+  .nav-item.active {
+    @apply text-cyan-DEFAULT bg-cyan-DEFAULT/10;
+  }
+
+  /* Form input — dark variant */
+  .field {
+    @apply w-full bg-surface-900 border border-surface-500 rounded-md px-3 py-2
+           text-sm font-mono text-gray-100 placeholder-gray-600
+           focus:outline-none focus:border-cyan-DEFAULT/60 focus:ring-1 focus:ring-cyan-DEFAULT/20
+           transition-colors duration-150;
+  }
+
+  /* Primary action button */
+  .btn-primary {
+    @apply px-4 py-2 bg-cyan-DEFAULT/10 border border-cyan-DEFAULT/30 rounded-md
+           text-sm font-medium text-cyan-DEFAULT
+           hover:bg-cyan-DEFAULT/20 hover:border-cyan-DEFAULT/60
+           active:scale-[0.98] transition-all duration-150;
+  }
+
+  /* Destructive / secondary button */
+  .btn-ghost {
+    @apply px-4 py-2 rounded-md text-sm font-medium text-gray-400
+           hover:text-gray-100 hover:bg-surface-600 transition-colors duration-150;
+  }
+}
