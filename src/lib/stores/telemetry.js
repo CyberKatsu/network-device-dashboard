@@ -37,7 +37,7 @@ export function startTelemetry() {
 
   try {
     worker = new Worker(
-      new URL('./telemetry.worker.js', import.meta.url),
+      new URL('../workers/telemetry.worker.js', import.meta.url),
       { type: 'module' }
     )
 
