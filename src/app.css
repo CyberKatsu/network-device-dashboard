@@ -6,6 +6,14 @@
   :root {
     --scrollbar-thumb: #1e2d4a;
     --scrollbar-track: #060c1a;
+
+    /* Design tokens as CSS vars — lets us use opacity variants in @apply-free CSS */
+    --color-cyan:           #00c8e8;
+    --color-status-up:      #22d3a0;
+    --color-status-down:    #ef4444;
+    --color-status-ranging: #f59e0b;
+    --color-status-warn:    #fb923c;
+    --color-surface-600:    #1e2d4a;
   }
 
   /* Custom scrollbar — matches dark theme */
@@ -18,26 +26,45 @@
 }
 
 @layer components {
-  /* Card panel — reused across all views */
+  /* Card panel */
   .panel {
     @apply bg-surface-700 border border-surface-500 rounded-lg;
   }
 
-  /* Monospace data value (signal levels, throughput numbers) */
+  /* Monospace data value */
   .data-value {
-    @apply font-mono text-cyan-DEFAULT tabular-nums;
+    @apply font-mono tabular-nums;
+    color: var(--color-cyan);
   }
 
-  /* Status pill */
+  /* Status pill base */
   .pill {
     @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium font-mono;
   }
-  .pill-up     { @apply pill bg-status-up/15 text-status-up; }
-  .pill-down   { @apply pill bg-status-down/15 text-status-down; }
-  .pill-warn   { @apply pill bg-status-ranging/15 text-status-ranging; }
-  .pill-info   { @apply pill bg-cyan-DEFAULT/15 text-cyan-DEFAULT; }
 
-  /* Subtle section label */
+  /* Pill variants — use hex+alpha instead of Tailwind opacity modifiers in @apply */
+  .pill-up {
+    @apply pill;
+    background-color: #22d3a026;   /* status-up / 15% */
+    color: var(--color-status-up);
+  }
+  .pill-down {
+    @apply pill;
+    background-color: #ef444426;   /* status-down / 15% */
+    color: var(--color-status-down);
+  }
+  .pill-warn {
+    @apply pill;
+    background-color: #f59e0b26;   /* status-ranging / 15% */
+    color: var(--color-status-ranging);
+  }
+  .pill-info {
+    @apply pill;
+    background-color: #00c8e826;   /* cyan / 15% */
+    color: var(--color-cyan);
+  }
+
+  /* Section label */
   .section-label {
     @apply text-2xs font-mono font-medium uppercase tracking-widest text-gray-500;
   }
@@ -45,31 +72,57 @@
   /* Nav item */
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-gray-400
-           hover:text-gray-100 hover:bg-surface-600 transition-colors duration-150 cursor-pointer;
+           hover:text-gray-100 transition-colors duration-150 cursor-pointer;
+  }
+  .nav-item:hover {
+    background-color: #1e2d4a;     /* surface-600 */
   }
   .nav-item.active {
-    @apply text-cyan-DEFAULT bg-cyan-DEFAULT/10;
+    color: var(--color-cyan);
+    background-color: #00c8e81a;   /* cyan / 10% */
   }
 
-  /* Form input — dark variant */
+  /* Form input */
   .field {
     @apply w-full bg-surface-900 border border-surface-500 rounded-md px-3 py-2
            text-sm font-mono text-gray-100 placeholder-gray-600
-           focus:outline-none focus:border-cyan-DEFAULT/60 focus:ring-1 focus:ring-cyan-DEFAULT/20
            transition-colors duration-150;
+    outline: none;
+  }
+  .field:focus {
+    border-color: #00c8e899;       /* cyan / 60% */
+    box-shadow: 0 0 0 1px #00c8e833; /* cyan / 20% */
   }
 
-  /* Primary action button */
+  /* Primary button */
   .btn-primary {
-    @apply px-4 py-2 bg-cyan-DEFAULT/10 border border-cyan-DEFAULT/30 rounded-md
-           text-sm font-medium text-cyan-DEFAULT
-           hover:bg-cyan-DEFAULT/20 hover:border-cyan-DEFAULT/60
-           active:scale-[0.98] transition-all duration-150;
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all duration-150;
+    color: var(--color-cyan);
+    background-color: #00c8e81a;   /* cyan / 10% */
+    border: 1px solid #00c8e84d;   /* cyan / 30% */
+  }
+  .btn-primary:hover {
+    background-color: #00c8e833;   /* cyan / 20% */
+    border-color: #00c8e899;       /* cyan / 60% */
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
-  /* Destructive / secondary button */
+  /* Ghost button */
   .btn-ghost {
     @apply px-4 py-2 rounded-md text-sm font-medium text-gray-400
-           hover:text-gray-100 hover:bg-surface-600 transition-colors duration-150;
+           hover:text-gray-100 transition-colors duration-150;
+  }
+  .btn-ghost:hover {
+    background-color: #1e2d4a;     /* surface-600 */
+  }
+  .btn-ghost:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
