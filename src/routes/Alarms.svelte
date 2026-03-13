@@ -1,5 +1,5 @@
-<script>
-  import { alarms, acknowledgeAlarm, clearAcknowledged, unackAlarmCount } from '$lib/stores/telemetry.js'
+<script lang="ts">
+  import { alarms, acknowledgeAlarm, clearAcknowledged, unackAlarmCount } from '$lib/stores/telemetry'
 
   let filterSeverity = 'all'   // 'all' | 'critical' | 'major' | 'minor' | 'warning' | 'info'
   let showAcked = false

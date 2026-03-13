@@ -1,5 +1,5 @@
-<script>
-  import { unackAlarmCount, workerStatus, newCriticalAlarm } from '$lib/stores/telemetry.js'
+<script lang="ts">
+  import { unackAlarmCount, workerStatus, newCriticalAlarm } from '$lib/stores/telemetry'
 
   export let currentRoute  = 'dashboard'
   export let collapsed     = false

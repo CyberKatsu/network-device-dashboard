@@ -87,7 +87,7 @@ On an embedded device web UI, the opposite is often true. The management interfa
 | Styling | TailwindCSS (JIT, purged) | Utility-first; predictable bundle size |
 | Charts | Chart.js (direct) | Fine-grained real-time control |
 | Real-time | Web Worker (mock WebSocket) | Decoupled transport layer |
-| State | Svelte stores | Built-in reactivity, no extra library |
+| State | Svelte stores + TypeScript | Typed payloads, built-in reactivity |
 | Deployment | GitHub Actions → Pages | Static host, real CI pipeline |
 | Fonts | IBM Plex Sans + JetBrains Mono | Technical aesthetic; monospace for data readouts |
 

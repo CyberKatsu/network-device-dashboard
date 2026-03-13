@@ -1,5 +1,5 @@
-<script>
-  import { workingConfig, savedConfig, isDirty, saveConfig, discardChanges } from '$lib/stores/device.js'
+<script lang="ts">
+  import { workingConfig, savedConfig, isDirty, saveConfig, discardChanges } from '$lib/stores/device'
 
   let saving  = false
   let toast   = null

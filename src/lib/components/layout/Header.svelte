@@ -1,7 +1,7 @@
-<script>
-  import { snapshot } from '$lib/stores/telemetry.js'
-  import { deviceInfo } from '$lib/stores/device.js'
-  import { theme, toggleTheme } from '$lib/stores/theme.js'
+<script lang="ts">
+  import { snapshot } from '$lib/stores/telemetry'
+  import { deviceInfo } from '$lib/stores/device'
+  import { theme, toggleTheme } from '$lib/stores/theme'
 
   export let currentRoute = 'dashboard'
 

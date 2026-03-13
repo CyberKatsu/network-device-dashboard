@@ -1,6 +1,6 @@
-<script>
-  import { PORTS } from '$lib/data/mockDevice.js'
-  import { snapshot } from '$lib/stores/telemetry.js'
+<script lang="ts">
+  import { PORTS } from '$lib/data/mockDevice'
+  import { snapshot } from '$lib/stores/telemetry'
   import OnuDetailModal from '$lib/components/panels/OnuDetailModal.svelte'
 
   let expandedPort = null
