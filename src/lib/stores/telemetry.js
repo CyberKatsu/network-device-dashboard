@@ -1,39 +1,36 @@
 /**
  * telemetry.js — Svelte reactive stores for real-time device data
- *
- * Starts the Web Worker and pipes messages into stores.
- * Components subscribe to these stores; they never touch the Worker directly.
  */
 
 import { writable, derived } from 'svelte/store'
 
 // ─── Stores ───────────────────────────────────────────────────────────────────
 
-/** Latest single telemetry snapshot */
-export const snapshot = writable(null)
-
-/** Rolling history of throughput for chart (last N points) */
-const HISTORY_LEN = 60
+export const snapshot         = writable(null)
 export const throughputHistory = writable([])
+export const alarms           = writable([])
 
-/** Alarm event log (newest first) */
-export const alarms = writable([])
-
-/** Unacknowledged alarm count — derived, used in nav badge */
 export const unackAlarmCount = derived(
   alarms,
   $alarms => $alarms.filter(a => !a.acknowledged).length
 )
 
-/** Worker connection state */
-export const workerStatus = writable('connecting')  // 'connecting' | 'live' | 'error'
+/**
+ * Fires true for 2 s whenever a critical/major alarm arrives.
+ * Used to drive the badge pulse animation in the sidebar.
+ */
+export const newCriticalAlarm = writable(false)
+let criticalPulseTimer = null
+
+export const workerStatus = writable('connecting')
+
+const HISTORY_LEN = 60
+let worker = null
 
 // ─── Worker bootstrap ─────────────────────────────────────────────────────────
 
-let worker = null
-
 export function startTelemetry() {
-  if (worker) return  // idempotent
+  if (worker) return
 
   try {
     worker = new Worker(
@@ -46,14 +43,8 @@ export function startTelemetry() {
         case 'telemetry':
           snapshot.set(data.payload)
           workerStatus.set('live')
-
-          // Append to rolling history
           throughputHistory.update(history => {
-            const point = {
-              t:    data.payload.timestamp,
-              up:   data.payload.totalUp,
-              down: data.payload.totalDown,
-            }
+            const point = { t: data.payload.timestamp, up: data.payload.totalUp, down: data.payload.totalDown }
             const next = [...history, point]
             return next.length > HISTORY_LEN ? next.slice(-HISTORY_LEN) : next
           })
@@ -61,6 +52,12 @@ export function startTelemetry() {
 
         case 'alarm':
           alarms.update(list => [data.payload, ...list].slice(0, 200))
+          // Trigger badge pulse for critical/major alarms
+          if (data.payload.severity === 'critical' || data.payload.severity === 'major') {
+            newCriticalAlarm.set(true)
+            clearTimeout(criticalPulseTimer)
+            criticalPulseTimer = setTimeout(() => newCriticalAlarm.set(false), 2000)
+          }
           break
       }
     }
@@ -75,14 +72,10 @@ export function startTelemetry() {
   }
 }
 
-/** Acknowledge an alarm by id */
 export function acknowledgeAlarm(id) {
-  alarms.update(list =>
-    list.map(a => a.id === id ? { ...a, acknowledged: true } : a)
-  )
+  alarms.update(list => list.map(a => a.id === id ? { ...a, acknowledged: true } : a))
 }
 
-/** Clear all acknowledged alarms */
 export function clearAcknowledged() {
   alarms.update(list => list.filter(a => !a.acknowledged))
 }
@@ -91,4 +84,5 @@ export function stopTelemetry() {
   worker?.terminate()
   worker = null
   workerStatus.set('connecting')
+  clearTimeout(criticalPulseTimer)
 }
