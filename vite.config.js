@@ -3,7 +3,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 
 // Set base to your repo name when deploying to GitHub Pages
 // e.g. if repo is github.com/yourname/olt-dashboard → base: '/olt-dashboard/'
-const base = process.env.GITHUB_PAGES ? '/olt-dashboard/' : '/'
+const base = process.env.GITHUB_PAGES ? '/network-device-dashboard/' : '/'
 
 export default defineConfig({
   plugins: [svelte()],
