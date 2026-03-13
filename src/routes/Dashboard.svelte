@@ -2,6 +2,7 @@
   import { snapshot, throughputHistory, alarms } from '$lib/stores/telemetry'
   import { deviceInfo } from '$lib/stores/device'
   import { TOTAL_ONUS, ACTIVE_ONUS } from '$lib/data/mockDevice'
+  import type { AlarmSeverity } from '$lib/types'
   import ThroughputChart from '$lib/components/charts/ThroughputChart.svelte'
   import SignalBars from '$lib/components/charts/SignalBars.svelte'
 
@@ -10,7 +11,7 @@
     .filter(a => a.severity === 'critical' || a.severity === 'major')
     .slice(0, 4)
 
-  function severityColor(s) {
+  function severityColor(s: AlarmSeverity): string {
     return s === 'critical' ? 'text-status-down' :
            s === 'major'    ? 'text-status-warn' :
            s === 'minor'    ? 'text-status-ranging' : 'text-gray-400'

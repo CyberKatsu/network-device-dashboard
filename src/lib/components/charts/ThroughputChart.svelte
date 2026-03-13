@@ -8,16 +8,17 @@
    */
 
   import { onMount, onDestroy } from 'svelte'
+  import type { ThroughputPoint } from '$lib/types'
   import { Chart, LineController, LineElement, PointElement, LinearScale,
            CategoryScale, Filler, Tooltip } from 'chart.js'
 
   Chart.register(LineController, LineElement, PointElement, LinearScale,
                  CategoryScale, Filler, Tooltip)
 
-  export let history = []   // Array of { t, up, down }
+  export let history: ThroughputPoint[] = []
 
-  let canvas
-  let chart = null
+  let canvas: HTMLCanvasElement
+  let chart: Chart | null = null
 
   // Chart.js dataset config
   const UP_COLOR   = '#22d3a0'
@@ -69,7 +70,7 @@
             titleFont:       { family: 'JetBrains Mono', size: 10 },
             bodyFont:        { family: 'JetBrains Mono', size: 11 },
             callbacks: {
-              label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)} Mbps`
+              label: ctx => ` ${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toFixed(1)} Mbps`
             }
           }
         },

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
+  import type { RouteKey } from '$lib/types'
   import { startTelemetry, stopTelemetry } from '$lib/stores/telemetry'
   import Sidebar       from '$lib/components/layout/Sidebar.svelte'
   import Header        from '$lib/components/layout/Header.svelte'
@@ -8,7 +9,7 @@
   import Configuration from './routes/Configuration.svelte'
   import Alarms        from './routes/Alarms.svelte'
 
-  let currentRoute     = 'dashboard'
+  let currentRoute: RouteKey = 'dashboard'
   let sidebarCollapsed = false
 
   onMount(() => startTelemetry())

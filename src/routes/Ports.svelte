@@ -1,27 +1,28 @@
 <script lang="ts">
   import { PORTS } from '$lib/data/mockDevice'
   import { snapshot } from '$lib/stores/telemetry'
+  import type { Onu } from '$lib/types'
   import OnuDetailModal from '$lib/components/panels/OnuDetailModal.svelte'
 
-  let expandedPort = null
-  let selectedOnu  = null   // { onu, portId } — drives the modal
-  let modalOpen    = false
+  let expandedPort: number | null = null
+  let selectedOnu: { onu: Onu; portId: number } | null = null
+  let modalOpen = false
 
-  function togglePort(id) {
+  function togglePort(id: number): void {
     expandedPort = expandedPort === id ? null : id
   }
 
-  function openOnu(onu, portId) {
+  function openOnu(onu: Onu, portId: number): void {
     selectedOnu = { onu, portId }
     modalOpen   = true
   }
 
-  function closeModal() {
+  function closeModal(): void {
     modalOpen   = false
     selectedOnu = null
   }
 
-  function rxClass(dBm) {
+  function rxClass(dBm: number | undefined): string {
     if (dBm == null) return 'text-gray-500'
     if (dBm > -20)   return 'text-status-up'
     if (dBm > -24)   return 'text-status-ranging'

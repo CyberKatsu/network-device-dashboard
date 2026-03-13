@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { workingConfig, savedConfig, isDirty, saveConfig, discardChanges } from '$lib/stores/device'
+  import type { DeviceConfig } from '$lib/types'
+  import { workingConfig, isDirty, saveConfig, discardChanges } from '$lib/stores/device'
 
-  let saving  = false
-  let toast   = null
+  let saving = false
+  let toast: { type: 'success' | 'error'; message: string } | null = null
 
   // ─── Validation ────────────────────────────────────────────────────────────
 
-  function validate(cfg) {
-    const e = {}
+  function validate(cfg: DeviceConfig): Partial<Record<string, string>> {
+    const e: Partial<Record<string, string>> = {}
     if (!cfg.hostname || !/^[a-z0-9-]{1,63}$/.test(cfg.hostname))
       e.hostname = 'Must be lowercase alphanumeric with hyphens, max 63 chars'
     if (!cfg.snmpCommunity || cfg.snmpCommunity.length < 4)
@@ -52,7 +53,7 @@
     toast = null
   }
 
-  function set(key, value) {
+  function set(key: keyof DeviceConfig, value: unknown): void {
     workingConfig.update(c => ({ ...c, [key]: value }))
   }
 </script>
@@ -100,7 +101,7 @@
           <label for="cfg-hostname" class="section-label block mb-1.5">Hostname</label>
           <input id="cfg-hostname" class="field" class:border-status-down={errors.hostname}
                  value={$workingConfig.hostname}
-                 on:input={e => set('hostname', e.target.value)} />
+                 on:input={e => set('hostname', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.hostname}<p class="text-2xs text-status-down mt-1 font-mono">{errors.hostname}</p>{/if}
         </div>
 
@@ -109,7 +110,7 @@
           <input id="cfg-snmp-community" class="field" type="password"
                  class:border-status-down={errors.snmpCommunity}
                  value={$workingConfig.snmpCommunity}
-                 on:input={e => set('snmpCommunity', e.target.value)} />
+                 on:input={e => set('snmpCommunity', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.snmpCommunity}<p class="text-2xs text-status-down mt-1 font-mono">{errors.snmpCommunity}</p>{/if}
         </div>
 
@@ -118,7 +119,7 @@
           <input id="cfg-snmp-trap" class="field" placeholder="10.0.0.50"
                  class:border-status-down={errors.snmpTrapHost}
                  value={$workingConfig.snmpTrapHost}
-                 on:input={e => set('snmpTrapHost', e.target.value)} />
+                 on:input={e => set('snmpTrapHost', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.snmpTrapHost}<p class="text-2xs text-status-down mt-1 font-mono">{errors.snmpTrapHost}</p>{/if}
         </div>
 
@@ -127,7 +128,7 @@
           <input id="cfg-syslog" class="field" placeholder="10.0.0.51"
                  class:border-status-down={errors.syslogHost}
                  value={$workingConfig.syslogHost}
-                 on:input={e => set('syslogHost', e.target.value)} />
+                 on:input={e => set('syslogHost', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.syslogHost}<p class="text-2xs text-status-down mt-1 font-mono">{errors.syslogHost}</p>{/if}
         </div>
 
@@ -147,7 +148,7 @@
           <input id="cfg-mgmt-vlan" class="field" type="number" min="1" max="4094"
                  class:border-status-down={errors.managementVlan}
                  value={$workingConfig.managementVlan}
-                 on:input={e => set('managementVlan', e.target.value)} />
+                 on:input={e => set('managementVlan', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.managementVlan}<p class="text-2xs text-status-down mt-1 font-mono">{errors.managementVlan}</p>{/if}
         </div>
 
@@ -156,7 +157,7 @@
           <input id="cfg-svc-vlan" class="field" type="number" min="1" max="4094"
                  class:border-status-down={errors.defaultServiceVlan}
                  value={$workingConfig.defaultServiceVlan}
-                 on:input={e => set('defaultServiceVlan', e.target.value)} />
+                 on:input={e => set('defaultServiceVlan', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.defaultServiceVlan}<p class="text-2xs text-status-down mt-1 font-mono">{errors.defaultServiceVlan}</p>{/if}
         </div>
 
@@ -164,7 +165,7 @@
           <label for="cfg-igmp-vlan" class="section-label block mb-1.5">IGMP VLAN</label>
           <input id="cfg-igmp-vlan" class="field" type="number" min="1" max="4094"
                  value={$workingConfig.igmpVlan}
-                 on:input={e => set('igmpVlan', e.target.value)} />
+                 on:input={e => set('igmpVlan', (e.currentTarget as HTMLInputElement).value)} />
         </div>
 
       </div>
@@ -182,7 +183,7 @@
           <label for="cfg-default-profile" class="section-label block mb-1.5">Default Profile</label>
           <input id="cfg-default-profile" class="field" placeholder="100/50"
                  value={$workingConfig.defaultUsProfile}
-                 on:input={e => set('defaultUsProfile', e.target.value)} />
+                 on:input={e => set('defaultUsProfile', (e.currentTarget as HTMLInputElement).value)} />
           <p class="text-2xs font-mono text-gray-600 mt-1">Format: upstream/downstream</p>
         </div>
 
@@ -190,7 +191,7 @@
           <label for="cfg-premium-profile" class="section-label block mb-1.5">Premium Profile</label>
           <input id="cfg-premium-profile" class="field" placeholder="1000/500"
                  value={$workingConfig.premiumUsProfile}
-                 on:input={e => set('premiumUsProfile', e.target.value)} />
+                 on:input={e => set('premiumUsProfile', (e.currentTarget as HTMLInputElement).value)} />
           <p class="text-2xs font-mono text-gray-600 mt-1">Format: upstream/downstream</p>
         </div>
 
@@ -230,7 +231,7 @@
           <label for="cfg-igmp-version" class="section-label block mb-1.5">IGMP Version</label>
           <select id="cfg-igmp-version" class="field"
                   value={$workingConfig.igmpVersion}
-                  on:change={e => set('igmpVersion', e.target.value)}>
+                  on:change={e => set('igmpVersion', (e.currentTarget as HTMLSelectElement).value)}>
             <option>IGMPv2</option>
             <option>IGMPv3</option>
           </select>
@@ -242,7 +243,7 @@
           <input id="cfg-max-groups" class="field" type="number" min="1" max="1024"
                  class:border-status-down={errors.maxMulticastGroups}
                  value={$workingConfig.maxMulticastGroups}
-                 on:input={e => set('maxMulticastGroups', e.target.value)} />
+                 on:input={e => set('maxMulticastGroups', (e.currentTarget as HTMLInputElement).value)} />
           {#if errors.maxMulticastGroups}<p class="text-2xs text-status-down mt-1 font-mono">{errors.maxMulticastGroups}</p>{/if}
         </div>
 

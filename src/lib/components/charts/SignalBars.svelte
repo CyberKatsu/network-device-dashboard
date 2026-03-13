@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PortTelemetry } from '$lib/types'
   /**
    * SignalBars.svelte
    *
@@ -12,26 +13,27 @@
    *   Critical: < -24 dBm  (red)
    */
 
-  export let ports = []  // Array of { portId, rxPower, status }
+  export let ports: PortTelemetry[] = []
 
   // dBm display range
   const MIN_DBM = -30
   const MAX_DBM = -7
 
-  function barHeight(dBm) {
+  function barHeight(dBm: number | null | undefined): number {
     const clamped = Math.max(MIN_DBM, Math.min(MAX_DBM, dBm ?? MIN_DBM))
     return ((clamped - MIN_DBM) / (MAX_DBM - MIN_DBM)) * 100
   }
 
-  function barColor(dBm, status) {
+  function barColor(dBm: number | null | undefined, status: string): string {
     if (status === 'down')    return '#ef4444'
     if (status === 'ranging') return '#f59e0b'
+    if (dBm == null)          return '#ef4444'
     if (dBm >= -20) return '#22d3a0'
     if (dBm >= -24) return '#f59e0b'
     return '#ef4444'
   }
 
-  function fmt(dBm) {
+  function fmt(dBm: number | null | undefined): string {
     if (dBm == null) return 'N/A'
     return `${dBm.toFixed(1)} dBm`
   }

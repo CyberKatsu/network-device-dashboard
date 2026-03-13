@@ -156,3 +156,7 @@ export type WorkerStatus = 'connecting' | 'live' | 'error'
 export type WorkerMessage =
   | { type: 'telemetry'; payload: TelemetrySnapshot }
   | { type: 'alarm';     payload: AlarmEvent }
+
+// ─── Routing ─────────────────────────────────────────────────────────────────
+
+export type RouteKey = 'dashboard' | 'ports' | 'configuration' | 'alarms'

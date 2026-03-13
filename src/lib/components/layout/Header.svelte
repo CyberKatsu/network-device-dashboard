@@ -3,7 +3,8 @@
   import { deviceInfo } from '$lib/stores/device'
   import { theme, toggleTheme } from '$lib/stores/theme'
 
-  export let currentRoute = 'dashboard'
+  import type { RouteKey } from '$lib/types'
+  export let currentRoute: RouteKey = 'dashboard'
 
   const routeLabels = {
     dashboard:     'Dashboard',

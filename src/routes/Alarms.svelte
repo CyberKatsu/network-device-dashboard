@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { AlarmSeverity } from '$lib/types'
   import { alarms, acknowledgeAlarm, clearAcknowledged, unackAlarmCount } from '$lib/stores/telemetry'
 
   let filterSeverity = 'all'   // 'all' | 'critical' | 'major' | 'minor' | 'warning' | 'info'
@@ -12,7 +13,7 @@
     return true
   })
 
-  function severityClass(s) {
+  function severityClass(s: AlarmSeverity): string {
     return s === 'critical' ? 'text-status-down bg-status-down/10 border-status-down/20' :
            s === 'major'    ? 'text-status-warn bg-status-warn/10 border-status-warn/20' :
            s === 'minor'    ? 'text-status-ranging bg-status-ranging/10 border-status-ranging/20' :
@@ -20,18 +21,18 @@
                               'text-gray-400 bg-gray-400/10 border-gray-400/20'
   }
 
-  function dotClass(s) {
+  function dotClass(s: AlarmSeverity): string {
     return s === 'critical' ? 'bg-status-down' :
            s === 'major'    ? 'bg-status-warn' :
            s === 'minor'    ? 'bg-status-ranging' :
            s === 'warning'  ? 'bg-yellow-400' : 'bg-gray-500'
   }
 
-  function formatTime(ts) {
+  function formatTime(ts: number): string {
     return new Date(ts).toLocaleTimeString('en-GB', { hour12: false })
   }
 
-  function formatDate(ts) {
+  function formatDate(ts: number): string {
     return new Date(ts).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
   }
 </script>
