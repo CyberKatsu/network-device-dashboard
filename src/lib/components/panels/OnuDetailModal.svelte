@@ -65,8 +65,9 @@
   $: y20 = H - (((-20) - MIN) / (MAX - MIN)) * H
   $: y24 = H - (((-24) - MIN) / (MAX - MIN)) * H
 
-  // Typed row helpers — explicit arrays avoid #each destructuring complexity with TS
-  $: identityRows: Array<[string, string]> = [
+  // Typed row helpers — declare type on the variable, assign in reactive block
+  let identityRows: Array<[string, string]> = []
+  $: identityRows = [
     ['Serial',     onu.serial],
     ['Vendor',     onu.vendor],
     ['Firmware',   onu.firmware],
@@ -76,7 +77,8 @@
     ['Registered', new Date(onu.registeredAt).toLocaleDateString('en-GB')],
   ]
 
-  $: omciRows: Array<[string, string, string]> = [
+  let omciRows: Array<[string, string, string]> = []
+  $: omciRows = [
     ['Rx Frames',     omci.rxFrames.toLocaleString(),     'text-status-up'],
     ['Tx Frames',     omci.txFrames.toLocaleString(),     'text-cyan-DEFAULT'],
     ['Rx Errors',     omci.rxErrors.toLocaleString(),     omci.rxErrors > 100 ? 'text-status-down' : 'text-gray-300'],
