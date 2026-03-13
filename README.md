@@ -2,7 +2,7 @@
 
 **A simulated web management dashboard for a fiber broadband OLT (Optical Line Terminal),** built as a frontend portfolio project demonstrating real-time data visualisation, form validation, and the architectural constraints of embedded device UI development.
 
-🔗 **[Live Demo](https://yourusername.github.io/olt-dashboard/)** &nbsp;|&nbsp; Built with Svelte + Vite + TailwindCSS
+🔗 **[Live Demo](https://cyberkatsu.github.io/network-device-dashboard/)** &nbsp;|&nbsp; Built with Svelte + Vite + TailwindCSS
 
 ---
 
