@@ -16,7 +16,7 @@ export const deviceInfo = writable({
   uptime:       '14d 07h 22m',
   managementIp: '192.168.100.1',
   location:     'Worthing DC, Rack 3A, U12',
-  vendor:       'Technetix',
+  vendor:       'Generic Networks',
   // Capabilities
   ponPorts:     8,
   maxOnus:      512,
