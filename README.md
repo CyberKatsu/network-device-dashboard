@@ -4,6 +4,8 @@
 
 🔗 **[Live Demo](https://cyberkatsu.github.io/network-device-dashboard/)** &nbsp;|&nbsp; Built with Svelte + Vite + TailwindCSS
 
+![alt text](image.png)
+
 ---
 
 ## The Problem This Solves
@@ -123,6 +125,16 @@ Open `http://localhost:5173`. The telemetry worker starts automatically and upda
 npm run build     # Production build (outputs to dist/)
 npm run preview   # Preview the production build locally
 ```
+
+### Docker
+
+To run the application using Docker Compose:
+
+```bash
+docker-compose up --build
+```
+
+The app will be available at `http://localhost:8080`.
 
 ---
 
